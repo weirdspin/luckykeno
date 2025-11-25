@@ -43,6 +43,10 @@ function App() {
 
   const handleTileClick = (number) => {
     playTileClickSound();
+    // Clear previous game results when a new selection is made
+    setHitNumbers([]);
+    setMatches(new Set());
+    setRevealedHitCount(0);
     setSelectedNumbers(prevSelectedNumbers => {
       const newSelectedNumbers = new Set(prevSelectedNumbers);
       if (newSelectedNumbers.has(number)) {
