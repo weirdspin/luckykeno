@@ -21,8 +21,10 @@ function PayoutTable({ riskLevel, matchCount }) {
             key={payout.hits} 
             className={`payout-row ${payout.hits === matchCount ? 'highlight' : ''}`}
           >
-            <span className="payout-hits">{payout.hits} Hits</span>
-            <span className="payout-multiplier">{payout.multiplier}x</span>
+            <div className="payout-item-content">
+              <span className="payout-hits">{payout.hits} Hits</span>
+              <span className="payout-multiplier">{payout.multiplier}x</span>
+            </div>
           </div>
         ))}
       </div>

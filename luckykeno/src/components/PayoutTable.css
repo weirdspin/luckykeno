@@ -7,35 +7,44 @@
 }
 
 .payout-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Two columns for hits and multiplier */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 0.5rem;
     margin-top: 1rem;
 }
 
 .payout-row {
-    display: contents; /* Makes the children direct members of the grid */
+    /* Each payout-row now contains a payout-item-content */
 }
 
-.payout-row > span {
+.payout-item-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 0.5rem;
     background-color: #1a202c;
     border-radius: 4px;
-    text-align: center;
     font-size: 0.9rem;
+    min-width: 80px; /* Ensure a minimum width for consistent sizing */
 }
 
-.payout-row > .payout-multiplier {
+.payout-hits {
+    color: #a0aec0;
+    margin-bottom: 0.2rem; /* Space between hits and multiplier */
+}
+
+.payout-multiplier {
     font-weight: 600;
     color: #f7fafc;
 }
 
-.payout-row > .payout-hits {
-    color: #a0aec0;
+/* Example style for a highlighted row - to be used later */
+.payout-row.highlight .payout-item-content {
+    background-color: #48bb78;
 }
 
-/* Example style for a highlighted row - to be used later */
-.payout-row.highlight > span {
-    background-color: #48bb78;
-    color: #1a202c;
+.payout-row.highlight .payout-hits,
+.payout-row.highlight .payout-multiplier {
+    color: #1a202c; /* Adjust text color for highlight */
 }
