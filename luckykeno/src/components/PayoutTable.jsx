@@ -10,7 +10,7 @@ function PayoutTable({ riskLevel, matchCount }) {
       hits: parseInt(hits, 10),
       multiplier: currentPayouts[hits],
     }))
-    .sort((a, b) => b.hits - a.hits); // Sort by hits descending
+    .sort((a, b) => a.hits - b.hits); // Sort by hits ascending
 
   return (
     <div className="payout-table">

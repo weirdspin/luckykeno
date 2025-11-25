@@ -8,30 +8,30 @@
 
 .payout-grid {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Changed from wrap to nowrap */
     justify-content: center;
     gap: 0.5rem;
     margin-top: 1rem;
-}
-
-.payout-row {
-    /* Each payout-row now contains a payout-item-content */
+    overflow-x: auto; /* Allow horizontal scrolling if items exceed container width */
+    padding-bottom: 5px; /* Add some padding for scrollbar */
 }
 
 .payout-item-content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* Changed from column to row */
     align-items: center;
-    padding: 0.5rem;
+    padding: 0.3rem 0.6rem; /* Reduced padding */
     background-color: #1a202c;
     border-radius: 4px;
-    font-size: 0.9rem;
-    min-width: 80px; /* Ensure a minimum width for consistent sizing */
+    font-size: 0.8rem; /* Reduced font size */
+    min-width: unset; /* Remove min-width for more compact sizing */
+    white-space: nowrap; /* Prevent text wrapping inside the item */
 }
 
 .payout-hits {
     color: #a0aec0;
-    margin-bottom: 0.2rem; /* Space between hits and multiplier */
+    margin-bottom: 0; /* Remove margin-bottom */
+    margin-right: 0.4rem; /* Add margin-right for spacing between hits and multiplier */
 }
 
 .payout-multiplier {
