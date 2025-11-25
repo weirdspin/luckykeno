@@ -24,6 +24,7 @@ function App() {
   const [hitNumbers, setHitNumbers] = useState([]);
   const [matches, setMatches] = useState(new Set());
   const [revealedHitCount, setRevealedHitCount] = useState(0); // For animation
+  const [displayMatchCount, setDisplayMatchCount] = useState(null); // New state for payout table highlighting
 
   // Placeholder sound functions
   const playTileClickSound = () => { console.log("Play tile click sound"); /* Play audio here */ };
@@ -38,8 +39,11 @@ function App() {
         setRevealedHitCount(prevCount => prevCount + 1);
       }, 200); // Reveal one hit number every 200ms
       return () => clearTimeout(timer);
+    } else if (hitNumbers.length > 0 && revealedHitCount === hitNumbers.length) {
+      // Animation finished, now display the final match count for payout table highlighting
+      setDisplayMatchCount(matches.size);
     }
-  }, [hitNumbers, revealedHitCount]);
+  }, [hitNumbers, revealedHitCount, matches.size]); // Added matches.size to dependencies
 
   const handleTileClick = (number) => {
     playTileClickSound();
@@ -47,6 +51,7 @@ function App() {
     setHitNumbers([]);
     setMatches(new Set());
     setRevealedHitCount(0);
+    setDisplayMatchCount(null); // Reset highlighting
     setSelectedNumbers(prevSelectedNumbers => {
       const newSelectedNumbers = new Set(prevSelectedNumbers);
       if (newSelectedNumbers.has(number)) {
@@ -88,6 +93,7 @@ function App() {
     playBetSound();
     setBalance(prevBalance => prevBalance - betAmount);
     setRevealedHitCount(0); // Reset animation counter
+    setDisplayMatchCount(null); // Reset highlighting for new bet
 
     // Clear previous results
     setHitNumbers([]);
@@ -98,10 +104,10 @@ function App() {
   
     const currentMatches = new Set([...selectedNumbers].filter(num => outcome.includes(num)));
     setMatches(currentMatches);
-    const matchCount = currentMatches.size;
+    // const matchCount = currentMatches.size; // No longer needed directly here
   
     const payoutTable = getPayouts(riskLevel);
-    const multiplier = payoutTable[matchCount] || 0;
+    const multiplier = payoutTable[currentMatches.size] || 0; // Use currentMatches.size here
     const winAmount = betAmount * multiplier;
   
     const newBalance = balance - betAmount + winAmount; // Calculate for history before setting state
@@ -156,7 +162,7 @@ function App() {
           />
           <PayoutTable 
             riskLevel={riskLevel} 
-            matchCount={matches.size} 
+            matchCount={displayMatchCount} 
           />
         </div>
       </div>
