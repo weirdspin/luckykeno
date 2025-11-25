@@ -1,0 +1,50 @@
+.keno-board {
+    /* The container style is now in App.css, so this can be more specific */
+}
+
+.keno-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr); /* 8 tiles per row */
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.keno-tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1a202c;
+    border: 1px solid #4a5568;
+    border-radius: 6px;
+    aspect-ratio: 1 / 1; /* Make tiles square */
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s, border-color 0.2s;
+    user-select: none;
+}
+
+.keno-tile:hover {
+    background-color: #2d3748;
+}
+
+.keno-tile:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease-out;
+}
+
+.keno-tile.selected {
+    background-color: #3182ce; /* Blue for selected */
+    border-color: #3182ce;
+}
+
+.keno-tile.hit {
+  background-color: #f6ad55; /* Orange/Yellow for hit numbers */
+  border-color: #f6ad55;
+  color: #1a202c; /* Dark text for contrast */
+}
+
+.keno-tile.match {
+  background-color: #48bb78; /* Green for matched numbers (selected and hit) */
+  border-color: #48bb78;
+  color: #1a202c; /* Dark text for contrast */
+}
