@@ -11,10 +11,7 @@ function BetControls({
 }) {
   return (
     <div className="bet-controls">
-      <div className="tabs">
-        <button className="tab active">Manual</button>
-        <button className="tab">Auto</button>
-      </div>
+
       <div className="control-group">
         <label htmlFor="bet-amount">Bet Amount</label>
         <input 
