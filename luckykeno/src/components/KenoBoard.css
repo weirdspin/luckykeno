@@ -1,10 +1,11 @@
 .keno-board {
+    min-width: 696px; /* Explicit width for 8 fixed 80px tiles with 0.5rem gap */
     /* The container style is now in App.css, so this can be more specific */
 }
 
 .keno-grid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr); /* 8 tiles per row */
+    grid-template-columns: repeat(8, 80px); /* 8 tiles per row, fixed 80px width */
     gap: 0.5rem;
     margin-top: 1rem;
 }
@@ -16,7 +17,8 @@
     background-color: #1a202c;
     border: 1px solid #4a5568;
     border-radius: 6px;
-    aspect-ratio: 1 / 1; /* Make tiles square */
+    width: 80px;  /* Fixed width */
+    height: 80px; /* Fixed height */
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.2s, border-color 0.2s;
