@@ -18,7 +18,7 @@
 
 .payout-item-content {
     display: flex;
-    flex-direction: row; /* Changed from column to row */
+    flex-direction: column; /* Changed from row to column to stack multiplier and hits */
     align-items: center;
     padding: 0.3rem 0.6rem; /* Reduced padding */
     background-color: #1a202c;

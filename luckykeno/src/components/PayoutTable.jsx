@@ -45,11 +45,10 @@ function PayoutTable({ selectedCount, matchCount }) {
               key={payout.hits} 
               className={rowClass}
             >
-              <div className="payout-item-content">
-                <span className="payout-hits">{payout.hits} Hits</span>
-                <span className="payout-multiplier">{payout.multiplier}x</span>
-              </div>
-            </div>
+                          <div className="payout-item-content">
+                            <span className="payout-multiplier">{payout.multiplier}x</span>
+                            <span className="payout-hits">{payout.hits} Hits</span>
+                          </div>            </div>
           );
         })}
       </div>
