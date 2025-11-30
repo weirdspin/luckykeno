@@ -10,7 +10,6 @@ import ProvablyFair from './components/ProvablyFair';
 function App() {
   const [balance, setBalance] = useState(1000);
   const [betAmount, setBetAmount] = useState(1.00);
-  const [riskLevel, setRiskLevel] = useState('medium');
   const [selectedNumbers, setSelectedNumbers] = useState(new Set());
   const [gameHistory, setGameHistory] = useState([]); // New state for game history
 
@@ -104,10 +103,9 @@ function App() {
   
     const currentMatches = new Set([...selectedNumbers].filter(num => outcome.includes(num)));
     setMatches(currentMatches);
-    // const matchCount = currentMatches.size; // No longer needed directly here
   
-    const payoutTable = getPayouts(riskLevel);
-    const multiplier = payoutTable[currentMatches.size] || 0; // Use currentMatches.size here
+    const payoutMultipliers = getPayouts(selectedNumbers.size);
+    const multiplier = payoutMultipliers[currentMatches.size] || 0;
     const winAmount = betAmount * multiplier;
   
     const newBalance = balance - betAmount + winAmount; // Calculate for history before setting state
@@ -125,7 +123,6 @@ function App() {
       {
         id: nonce, // Use nonce as a unique ID for this round
         betAmount,
-        riskLevel,
         selectedNumbers: Array.from(selectedNumbers),
         hitNumbers: outcome,
         matches: Array.from(currentMatches),
@@ -144,9 +141,7 @@ function App() {
         <div className="left-column">
           <BetControls 
             betAmount={betAmount}
-            riskLevel={riskLevel}
             onBetAmountChange={setBetAmount}
-            onRiskChange={setRiskLevel}
             onAutoPick={handleAutoPick}
             onClear={handleClear}
             onBet={handleBet}
@@ -161,7 +156,7 @@ function App() {
             revealedHitCount={revealedHitCount}
           />
           <PayoutTable 
-            riskLevel={riskLevel} 
+            selectedCount={selectedNumbers.size} 
             matchCount={displayMatchCount} 
           />
         </div>

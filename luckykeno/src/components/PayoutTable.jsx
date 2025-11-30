@@ -1,16 +1,31 @@
 import './PayoutTable.css';
 import { getPayouts } from '../utils/gameLogic';
 
-function PayoutTable({ riskLevel, matchCount }) {
-  const currentPayouts = getPayouts(riskLevel);
+function PayoutTable({ selectedCount, matchCount }) {
+  const currentPayouts = getPayouts(selectedCount);
 
-  // Convert the object to an array of objects for easier mapping
-  const payoutList = Object.keys(currentPayouts)
-    .map(hits => ({
-      hits: parseInt(hits, 10),
-      multiplier: currentPayouts[hits],
+  // Convert the array to a list of objects for mapping
+  // Only show payouts for hits with a multiplier > 0
+  const payoutList = currentPayouts
+    .map((multiplier, hits) => ({
+      hits,
+      multiplier,
     }))
-    .sort((a, b) => a.hits - b.hits); // Sort by hits ascending
+    .filter(payout => payout.multiplier > 0)
+    .sort((a, b) => b.hits - a.hits); // Sort by hits descending
+
+  // Do not render the table if there are no payouts to show
+  // (e.g., when 0 numbers are selected)
+  if (payoutList.length === 0) {
+    return (
+      <div className="payout-table">
+        <h2>Payout Table</h2>
+        <div className="payout-grid empty">
+          <p>Select up to 10 numbers to see payouts.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="payout-table">

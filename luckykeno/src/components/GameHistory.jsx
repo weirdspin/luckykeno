@@ -12,7 +12,7 @@ function GameHistory({ gameHistory }) {
             <div key={game.id} className="history-item">
               <div className="history-row">
                 <span>Bet: ${game.betAmount.toFixed(2)}</span>
-                <span>Risk: {game.riskLevel}</span>
+                <span>Picks: {game.selectedNumbers.length}</span>
                 <span>Nonce: {game.id}</span>
               </div>
               <div className="history-row">
