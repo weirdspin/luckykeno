@@ -11,46 +11,50 @@ function App() {
   const [balance, setBalance] = useState(1000);
   const [betAmount, setBetAmount] = useState(1.00);
   const [selectedNumbers, setSelectedNumbers] = useState(new Set());
-  const [gameHistory, setGameHistory] = useState([]); // New state for game history
+  const [gameHistory, setGameHistory] = useState([]);
+  const [winAmountPopup, setWinAmountPopup] = useState(null);
+  const [lastWinAmount, setLastWinAmount] = useState(0);
 
   // Provably Fair state
   const [clientSeed, setClientSeed] = useState('lucky-keno-client-seed');
-  const [serverSeed, setServerSeed] = useState('some-secret-server-seed'); // This would come from a server
-  const [serverSeedHash, setServerSeedHash] = useState('...'); // This would be the hash of the seed
+  const [serverSeed, setServerSeed] = useState('some-secret-server-seed');
+  const [serverSeedHash, setServerSeedHash] = useState('...');
   const [nonce, setNonce] = useState(0);
 
   // Game result state
   const [hitNumbers, setHitNumbers] = useState([]);
   const [matches, setMatches] = useState(new Set());
-  const [revealedHitCount, setRevealedHitCount] = useState(0); // For animation
-  const [displayMatchCount, setDisplayMatchCount] = useState(null); // New state for payout table highlighting
+  const [revealedHitCount, setRevealedHitCount] = useState(0);
+  const [displayMatchCount, setDisplayMatchCount] = useState(null);
 
   // Placeholder sound functions
-  const playTileClickSound = () => { console.log("Play tile click sound"); /* Play audio here */ };
-  const playBetSound = () => { console.log("Play bet sound"); /* Play audio here */ };
-  const playWinSound = () => { console.log("Play win sound"); /* Play audio here */ };
-  const playLoseSound = () => { console.log("Play lose sound"); /* Play audio here */ };
+  const playTileClickSound = () => { console.log("Play tile click sound"); };
+  const playBetSound = () => { console.log("Play bet sound"); };
+  const playWinSound = () => { console.log("Play win sound"); };
+  const playLoseSound = () => { console.log("Play lose sound"); };
 
   // Animation for revealing hit numbers one by one
   useEffect(() => {
     if (hitNumbers.length > 0 && revealedHitCount < hitNumbers.length) {
       const timer = setTimeout(() => {
         setRevealedHitCount(prevCount => prevCount + 1);
-      }, 200); // Reveal one hit number every 200ms
+      }, 200);
       return () => clearTimeout(timer);
     } else if (hitNumbers.length > 0 && revealedHitCount === hitNumbers.length) {
-      // Animation finished, now display the final match count for payout table highlighting
+      // Animation finished
       setDisplayMatchCount(matches.size);
+      if (lastWinAmount > 0) {
+        setWinAmountPopup(lastWinAmount);
+      }
     }
-  }, [hitNumbers, revealedHitCount, matches.size]); // Added matches.size to dependencies
+  }, [hitNumbers, revealedHitCount, matches.size, lastWinAmount]);
 
   const handleTileClick = (number) => {
     playTileClickSound();
-    // Clear previous game results when a new selection is made
     setHitNumbers([]);
     setMatches(new Set());
     setRevealedHitCount(0);
-    setDisplayMatchCount(null); // Reset highlighting
+    setDisplayMatchCount(null);
     setSelectedNumbers(prevSelectedNumbers => {
       const newSelectedNumbers = new Set(prevSelectedNumbers);
       if (newSelectedNumbers.has(number)) {
@@ -65,7 +69,7 @@ function App() {
   };
 
   const handleAutoPick = () => {
-    playTileClickSound(); // Assuming auto-pick also makes a sound
+    playTileClickSound();
     const newSelectedNumbers = new Set();
     while (newSelectedNumbers.size < 10) {
       const randomNumber = Math.floor(Math.random() * 40) + 1;
@@ -75,7 +79,7 @@ function App() {
   };
 
   const handleClear = () => {
-    playTileClickSound(); // Assuming clear also makes a sound
+    playTileClickSound();
     setSelectedNumbers(new Set());
   };
 
@@ -90,11 +94,12 @@ function App() {
     }
   
     playBetSound();
+    setWinAmountPopup(null); // Clear popup on new bet
+    setLastWinAmount(0);
     setBalance(prevBalance => prevBalance - betAmount);
-    setRevealedHitCount(0); // Reset animation counter
-    setDisplayMatchCount(null); // Reset highlighting for new bet
+    setRevealedHitCount(0);
+    setDisplayMatchCount(null);
 
-    // Clear previous results
     setHitNumbers([]);
     setMatches(new Set());
   
@@ -107,8 +112,9 @@ function App() {
     const payoutMultipliers = getPayouts(selectedNumbers.size);
     const multiplier = payoutMultipliers[currentMatches.size] || 0;
     const winAmount = betAmount * multiplier;
+    setLastWinAmount(winAmount);
   
-    const newBalance = balance - betAmount + winAmount; // Calculate for history before setting state
+    const newBalance = balance - betAmount + winAmount;
     if (winAmount > 0) {
       setBalance(newBalance);
       playWinSound();
@@ -118,10 +124,9 @@ function App() {
   
     setNonce(prevNonce => prevNonce + 1);
     
-    // Record game history
     setGameHistory(prevHistory => [
       {
-        id: nonce, // Use nonce as a unique ID for this round
+        id: nonce,
         betAmount,
         selectedNumbers: Array.from(selectedNumbers),
         hitNumbers: outcome,
@@ -129,10 +134,8 @@ function App() {
         winAmount,
         balanceAfter: newBalance,
       },
-      ...prevHistory, // Add new game to the top
+      ...prevHistory,
     ]);
-
-    // In a real app, you would now get a new serverSeed and its hash from the server
   };
 
   return (
@@ -154,6 +157,7 @@ function App() {
             hitNumbers={hitNumbers}
             matches={matches}
             revealedHitCount={revealedHitCount}
+            winAmountPopup={winAmountPopup}
           />
           <PayoutTable 
             selectedCount={selectedNumbers.size} 

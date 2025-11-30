@@ -1,6 +1,7 @@
 import './KenoBoard.css';
+import WinPopup from './WinPopup';
 
-function KenoBoard({ selectedNumbers, onTileClick, hitNumbers, matches, revealedHitCount }) {
+function KenoBoard({ selectedNumbers, onTileClick, hitNumbers, matches, revealedHitCount, winAmountPopup }) {
   const tiles = Array.from({ length: 40 }, (_, i) => i + 1);
 
   // Sort hitNumbers to ensure consistent reveal order
@@ -8,6 +9,7 @@ function KenoBoard({ selectedNumbers, onTileClick, hitNumbers, matches, revealed
 
   return (
     <div className="keno-board">
+      <WinPopup winAmount={winAmountPopup} />
       <h2>Keno Board</h2>
       <div className="keno-grid">
         {tiles.map(number => {

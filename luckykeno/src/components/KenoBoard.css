@@ -1,4 +1,5 @@
 .keno-board {
+    position: relative; /* For positioning the win popup */
     min-width: 696px; /* Explicit width for 8 fixed 80px tiles with 0.5rem gap */
     /* The container style is now in App.css, so this can be more specific */
 }
