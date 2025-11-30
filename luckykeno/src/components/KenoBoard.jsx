@@ -9,8 +9,8 @@ function KenoBoard({ selectedNumbers, onTileClick, hitNumbers, matches, revealed
 
   return (
     <div className="keno-board">
-      <WinPopup winAmount={winAmountPopup} />
       <h2>Keno Board</h2>
+      <WinPopup winAmount={winAmountPopup} /> {/* Render the popup here */}
       <div className="keno-grid">
         {tiles.map(number => {
           const isSelected = selectedNumbers.has(number);

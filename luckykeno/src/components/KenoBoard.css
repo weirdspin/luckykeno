@@ -1,14 +1,25 @@
 .keno-board {
     position: relative; /* For positioning the win popup */
     min-width: 696px; /* Explicit width for 8 fixed 80px tiles with 0.5rem gap */
+    display: flex; /* Make it a flex container */
+    flex-direction: column; /* Stack children vertically */
     /* The container style is now in App.css, so this can be more specific */
+}
+
+.keno-board h2 {
+    text-align: center;
+    margin-bottom: 1rem; /* Add some space below the title */
 }
 
 .keno-grid {
     display: grid;
     grid-template-columns: repeat(8, 80px); /* 8 tiles per row, fixed 80px width */
     gap: 0.5rem;
-    margin-top: 1rem;
+    /* margin-top: 1rem; removed - now controlled by keno-board flex layout or h2 margin */
+    position: relative; /* Re-add for WinPopup relative positioning, now it covers the numbers*/
+    flex-grow: 1; /* Allow grid to take remaining space */
+    justify-content: center; /* Center the grid if it doesn't fill the width */
+    align-items: start; /* Align items to the start */
 }
 
 .keno-tile {
