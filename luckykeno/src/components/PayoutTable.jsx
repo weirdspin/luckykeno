@@ -12,7 +12,7 @@ function PayoutTable({ selectedCount, matchCount }) {
       multiplier,
     }))
     .filter(payout => payout.multiplier > 0)
-    .sort((a, b) => b.hits - a.hits); // Sort by hits descending
+    .sort((a, b) => a.hits - b.hits); // Sort by hits ascending
 
   // Do not render the table if there are no payouts to show
   // (e.g., when 0 numbers are selected)
