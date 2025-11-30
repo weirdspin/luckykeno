@@ -39,12 +39,26 @@
     color: #f7fafc;
 }
 
-/* Example style for a highlighted row - to be used later */
+/* Example style for a highlighted row */
 .payout-row.highlight .payout-item-content {
-    background-color: #48bb78;
+    background-color: #48bb78; /* Green for highlighted win */
 }
 
 .payout-row.highlight .payout-hits,
 .payout-row.highlight .payout-multiplier {
-    color: #1a202c; /* Adjust text color for highlight */
+    color: #1a202c; /* Dark text for contrast on green background */
+}
+
+.payout-row.zero-multiplier .payout-item-content {
+    background-color: #f6ad55; /* Orange for highlighted zero multiplier */
+}
+
+.payout-row.zero-multiplier .payout-hits,
+.payout-row.zero-multiplier .payout-multiplier {
+    color: #1a202c; /* Dark text for contrast on orange background */
+}
+
+/* Ensure highlighted zero-multiplier still looks distinct if it happens */
+.payout-row.highlight.zero-multiplier .payout-item-content {
+  background-color: #f6ad55; /* Keep orange if both highlight and zero-multiplier */
 }
