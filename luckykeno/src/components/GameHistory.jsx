@@ -15,14 +15,9 @@ function GameHistory({ gameHistory }) {
                 <span>Picks: {game.selectedNumbers.length}</span>
                 <span>Nonce: {game.id}</span>
               </div>
+
               <div className="history-row">
-                <span>Selected: [{game.selectedNumbers.join(', ')}]</span>
-              </div>
-              <div className="history-row">
-                <span>Hit: [{game.hitNumbers.join(', ')}]</span>
-              </div>
-              <div className="history-row">
-                <span>Matches: [{game.matches.join(', ')}] ({game.matches.length})</span>
+                <span>Won Numbers: {game.matches.length}</span>
               </div>
               <div className="history-row">
                 <span>Win: ${game.winAmount.toFixed(2)}</span>
