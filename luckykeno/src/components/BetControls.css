@@ -1,3 +1,11 @@
+.balance-display {
+    text-align: center;
+    font-size: 1.1rem; /* Matches .btn-primary font-size */
+    font-weight: 600;  /* Matches .btn font-weight */
+    color: #f7fafc;   /* Light color for visibility against dark background */
+    margin-bottom: 1rem;
+}
+
 .bet-controls {
     display: flex;
     flex-direction: column;

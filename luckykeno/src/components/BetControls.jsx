@@ -1,6 +1,7 @@
 import './BetControls.css';
 
 function BetControls({ 
+  balance,
   betAmount,
   onBetAmountChange,
   onAutoPick, 
@@ -9,6 +10,10 @@ function BetControls({
 }) {
   return (
     <div className="bet-controls">
+
+      <div className="balance-display">
+        Balance: ${balance.toFixed(2)}
+      </div>
 
       <div className="control-group">
         <label htmlFor="bet-amount">Bet Amount</label>

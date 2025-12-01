@@ -149,6 +149,7 @@ function App() {
       <div className="main-layout">
         <div className="left-column">
           <BetControls 
+            balance={balance}
             betAmount={betAmount}
             onBetAmountChange={setBetAmount}
             onAutoPick={handleAutoPick}
