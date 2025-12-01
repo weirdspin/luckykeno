@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css'
-import { getKenoOutcome, getPayouts } from './utils/gameLogic';
+import { getKenoOutcome, getPayouts, sha256 } from './utils/gameLogic';
 import BetControls from './components/BetControls';
 import KenoBoard from './components/KenoBoard';
 import PayoutTable from './components/PayoutTable';
@@ -19,8 +19,16 @@ function App() {
   // Provably Fair state
   const [clientSeed, setClientSeed] = useState('lucky-keno-client-seed');
   const [serverSeed, setServerSeed] = useState('some-secret-server-seed');
-  const [serverSeedHash, setServerSeedHash] = useState('...');
+  const [serverSeedHash, setServerSeedHash] = useState(''); // Initialize with empty string
   const [nonce, setNonce] = useState(0);
+
+  useEffect(() => {
+    const calculateHash = async () => {
+      const hash = await sha256(serverSeed);
+      setServerSeedHash(hash);
+    };
+    calculateHash();
+  }, [serverSeed]);
 
   // Game result state
   const [hitNumbers, setHitNumbers] = useState([]);
@@ -144,6 +152,16 @@ function App() {
     });
   };
 
+  const handleResetNonce = () => {
+    setNonce(0);
+  };
+
+  const handleChangeServerSeed = () => {
+    const newServerSeed = Math.random().toString(36).substring(2) + Date.now().toString(36);
+    setServerSeed(newServerSeed);
+    setNonce(0); // Reset nonce when server seed changes
+  };
+
   return (
     <div className="app">
       <div className="main-layout">
@@ -179,6 +197,8 @@ function App() {
           serverSeedHash={serverSeedHash}
           nonce={nonce}
           onClientSeedChange={setClientSeed}
+          onChangeServerSeed={handleChangeServerSeed}
+          onResetNonce={handleResetNonce}
         />
       </div>
     </div>
