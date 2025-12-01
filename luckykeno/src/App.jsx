@@ -14,6 +14,7 @@ function App() {
   const [gameHistory, setGameHistory] = useState([]);
   const [winAmountPopup, setWinAmountPopup] = useState(null);
   const [lastWinAmount, setLastWinAmount] = useState(0);
+  const [pendingGameResult, setPendingGameResult] = useState(null);
 
   // Provably Fair state
   const [clientSeed, setClientSeed] = useState('lucky-keno-client-seed');
@@ -46,8 +47,13 @@ function App() {
       if (lastWinAmount > 0) {
         setWinAmountPopup(lastWinAmount);
       }
+
+      if (pendingGameResult) {
+        setGameHistory(prevHistory => [pendingGameResult, ...prevHistory]);
+        setPendingGameResult(null); // Clear pending result after adding to history
+      }
     }
-  }, [hitNumbers, revealedHitCount, matches.size, lastWinAmount]);
+  }, [hitNumbers, revealedHitCount, matches.size, lastWinAmount, pendingGameResult, setGameHistory]);
 
   const handleTileClick = (number) => {
     playTileClickSound();
@@ -122,20 +128,20 @@ function App() {
       playLoseSound();
     }
   
-    setNonce(prevNonce => prevNonce + 1);
-    
-    setGameHistory(prevHistory => [
-      {
-        id: nonce,
-        betAmount,
-        selectedNumbers: Array.from(selectedNumbers),
-        hitNumbers: outcome,
-        matches: Array.from(currentMatches),
-        winAmount,
-        balanceAfter: newBalance,
-      },
-      ...prevHistory,
-    ]);
+    // Calculate the nonce for this game BEFORE incrementing the global nonce state
+    const gameNonce = nonce;
+    setNonce(prevNonce => prevNonce + 1); // Increment for the *next* game
+
+    setPendingGameResult({
+      id: gameNonce, // Use the nonce for *this* game
+      betAmount,
+      selectedNumbers: Array.from(selectedNumbers),
+      hitNumbers: outcome,
+      matches: Array.from(currentMatches),
+      winAmount,
+      balanceAfter: newBalance,
+      time: Date.now(),
+    });
   };
 
   return (
